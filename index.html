@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>jocarsa | nodos</title>
+  <link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+  <div id="topbar">
+    <div id="marca">
+      <div class="ju-logo">jn</div>
+      <div>
+        <h1>jocarsa | nodos</h1>
+        <p>Lenguaje visual compilable a varios lenguajes</p>
+      </div>
+    </div>
+
+    <form id="search-form" action="#" method="get">
+      <input id="search-input" type="search" placeholder="Buscar nodo o proyecto...">
+      <button class="search-btn" type="button" id="btnSearch">Buscar</button>
+      <button class="search-clear" type="button" id="btnClearSearch">Limpiar</button>
+    </form>
+
+    <div id="herramientas">
+      <button class="toolbtn-link primario" type="button" id="btnPlay">▶ Play</button>
+      <button class="toolbtn-link" type="button" id="btnPseudo">Pseudocódigo</button>
+      <button class="toolbtn-link" type="button" id="btnPython">Python</button>
+      <button class="toolbtn-link" type="button" id="btnJavaScript">JavaScript</button>
+      <button class="toolbtn-link primario" type="button" id="btnExport">Exportar JSON</button>
+    </div>
+  </div>
+
+  <div id="app">
+    <aside id="bandejas">
+      <div class="side-title">Proyectos</div>
+      <div id="projectsList"></div>
+
+      <button class="ju-btn ju-btn-secondary full-width" type="button" id="btnNewProject">Nuevo proyecto</button>
+      <button class="ju-btn ju-btn-secondary full-width" type="button" id="btnDuplicateProject">Duplicar</button>
+      <button class="ju-btn ju-btn-danger full-width" type="button" id="btnDeleteProject">Eliminar</button>
+
+      <div class="cuenta chaflan">
+        <strong>Prototipo 07</strong><br>
+        Conexiones manuales desde salida a entrada.<br>
+        Operación y comparación tienen dos entradas.<br>
+        Play ejecuta el grafo usando entradas y salidas reales.
+      </div>
+    </aside>
+
+    <section id="mensajes">
+      <div class="side-title">Nodos</div>
+
+      <div class="node-category">Datos</div>
+      <article class="palette-node color-accent" draggable="true" data-kind="declare" data-title="Declarar variable" data-json='{"name":"variable","value":"0"}'>
+        <a href="#"><div class="asunto-linea"><h3>Declarar variable</h3><span class="badge-thread">dato</span></div><p>Crea una variable con valor inicial.</p></a>
+      </article>
+
+      <article class="palette-node color-blue" draggable="true" data-kind="assign" data-title="Asignar valor" data-json='{"name":"variable","value":"10"}'>
+        <a href="#"><div class="asunto-linea"><h3>Asignar valor</h3><span class="badge-thread">dato</span></div><p>Cambia el valor de una variable.</p></a>
+      </article>
+
+      <div class="node-category">Expresiones</div>
+      <article class="palette-node color-green" draggable="true" data-kind="operation" data-title="Operación" data-json='{"target":"resultado","left":"a","operator":"+","right":"b"}'>
+        <a href="#"><div class="asunto-linea"><h3>Operación</h3><span class="badge-thread">expr</span></div><p>Calcula usando dos entradas o valores escritos.</p></a>
+      </article>
+
+      <article class="palette-node color-purple" draggable="true" data-kind="comparison" data-title="Comparación" data-json='{"left":"a","operator":">","right":"b"}'>
+        <a href="#"><div class="asunto-linea"><h3>Comparación</h3><span class="badge-thread">bool</span></div><p>Compara dos entradas y genera TRUE/FALSE.</p></a>
+      </article>
+
+      <div class="node-category">Flujo</div>
+      <article class="palette-node color-warning" draggable="true" data-kind="if" data-title="Condición IF" data-json='{"condition":"edad >= 18"}'>
+        <a href="#"><div class="asunto-linea"><h3>Condición IF</h3><span class="badge-thread">flujo</span></div><p>Ejecuta una rama si se cumple una condición.</p></a>
+      </article>
+
+      <article class="palette-node color-danger" draggable="true" data-kind="while" data-title="Bucle WHILE" data-json='{"condition":"i < 10","maxIterations":"20"}'>
+        <a href="#"><div class="asunto-linea"><h3>Bucle WHILE</h3><span class="badge-thread">flujo</span></div><p>Repite mientras se cumpla una condición.</p></a>
+      </article>
+
+      <article class="palette-node color-accent" draggable="true" data-kind="for" data-title="Bucle FOR" data-json='{"iterator":"i","from":"0","to":"10","step":"1"}'>
+        <a href="#"><div class="asunto-linea"><h3>Bucle FOR</h3><span class="badge-thread">flujo</span></div><p>Repite usando contador.</p></a>
+      </article>
+
+      <div class="node-category">Salida</div>
+      <article class="palette-node color-green" draggable="true" data-kind="print" data-title="Mostrar" data-json='{"value":"mensaje"}'>
+        <a href="#"><div class="asunto-linea"><h3>Mostrar</h3><span class="badge-thread">io</span></div><p>Muestra un valor en la consola.</p></a>
+      </article>
+    </section>
+
+    <section id="contenido">
+      <div id="cabecera-contenido">
+        <div>
+          <h2>Espacio de trabajo</h2>
+          <p>Los nodos describen intención semántica; los botones generan código o ejecutan una simulación.</p>
+        </div>
+        <div class="ju-button-row">
+          <button class="ju-btn ju-btn-secondary" type="button" id="btnResetView">Vista inicial</button>
+          <button class="ju-btn ju-btn-secondary" type="button" id="btnAutoArrange">Ordenar</button>
+          <button class="ju-btn ju-btn-primary" type="button" id="btnClearWorkspace">Vaciar</button>
+        </div>
+      </div>
+
+      <div id="panel">
+        <main id="workspace" class="chaflan">
+          <div id="world">
+            <svg id="connections" aria-hidden="true"></svg>
+            <svg id="tempConnection" aria-hidden="true"></svg>
+            <div id="nodesLayer"></div>
+          </div>
+          <div class="workspace-hint" id="workspaceHint">Arrastra un nodo aquí para empezar</div>
+          <div class="zoom-indicator" id="zoomIndicator">100%</div>
+        </main>
+
+        <div class="right-panel-stack">
+          <aside id="inspector" class="ju-card chaflan">
+            <h3>Inspector</h3>
+            <p class="ju-subtle">Edita el nodo. El compilador lo convertirá a Python, JavaScript u otros lenguajes.</p>
+
+            <form class="ju-form-grid" id="inspectorForm">
+              <label class="ju-form-full">
+                <span>Título</span>
+                <input type="text" id="nodeTitle" placeholder="Título del nodo">
+              </label>
+
+              <label>
+                <span>Tipo</span>
+                <input type="text" id="nodeKind" readonly>
+              </label>
+
+              <label>
+                <span>ID</span>
+                <input type="text" id="nodeId" readonly>
+              </label>
+
+              <label class="ju-form-full">
+                <span>Propiedades JSON</span>
+                <textarea id="nodeData" placeholder='{"name":"x","value":"10"}'></textarea>
+              </label>
+            </form>
+          </aside>
+
+          <aside id="consolePanel" class="ju-card chaflan">
+            <div class="folder-line">
+              <h3>Consola</h3>
+              <button class="ju-btn ju-btn-secondary" type="button" id="btnClearConsole">Limpiar</button>
+            </div>
+            <div id="consoleOutput" class="console-output"><span class="console-empty">Pulsa Play para ejecutar el grafo.</span></div>
+          </aside>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <dialog id="codeDialog" class="code-dialog">
+    <div class="dialog-head">
+      <h3 id="codeDialogTitle">Código</h3>
+      <button type="button" id="btnCloseDialog">×</button>
+    </div>
+    <pre><code id="codeOutput"></code></pre>
+    <div class="dialog-actions">
+      <button class="ju-btn ju-btn-secondary" type="button" id="btnCopyCode">Copiar</button>
+      <button class="ju-btn ju-btn-primary" type="button" id="btnDownloadCode">Descargar</button>
+    </div>
+  </dialog>
+
+  <div id="toastStack" class="ju-toast-stack"></div>
+  <script src="app.js"></script>
+</body>
+</html>
