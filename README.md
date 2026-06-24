@@ -1,38 +1,20 @@
-# jocarsa | nodos - prototipo v7
+# jocarsa | nodos - v23 compilador C/C++ corregido
 
-Mejora principal:
+Corrección:
 
-La generación de Python y JavaScript ahora se deriva del grafo visual:
-
-- Lee conexiones reales entre nodos.
-- Usa la salida de cada nodo como expresión para el siguiente.
-- `Operación` compila usando sus entradas A/B si están conectadas.
-- `Comparación` compila usando sus entradas A/B y genera una variable booleana.
-- Las salidas TRUE/FALSE se representan como expresión booleana o negada.
-- `Mostrar` compila usando su entrada conectada.
-
-Ejemplo:
+El error:
 
 ```text
-48 + 5 > 50 -> TRUE -> Mostrar
+Cannot read properties of undefined (reading 'functionStart')
 ```
 
-Python generado aproximado:
+ocurría porque los botones C/C++ llamaban a `showCode("c")` o `showCode("cpp")`,
+pero en `compilers` no existían correctamente las claves `c` y `cpp`.
 
-```python
-edad = 48
-suma = 5
-resultado = edad + suma
-cond_n4 = resultado > 50
-print(cond_n4)
-```
+En v23:
 
-JavaScript generado aproximado:
-
-```js
-let edad = 48;
-let suma = 5;
-resultado = edad + suma;
-cond_n4 = resultado > 50;
-console.log(cond_n4);
-```
+1. `compilers.c` existe.
+2. `compilers.cpp` existe.
+3. Se añade protección si un compilador no existe.
+4. Se mantienen los botones C/C++ visibles.
+5. Se conserva backend PHP + SQLite.
